@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контактна інформація</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container form-page">
+        <h1>Контактна інформація</h1>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="email">Ваша електронна адреса:</label>
+                <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label for="fullname">Прізвище, ім’я та по батькові:</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Іванов Іван Іванович" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Ваш вік:</label>
+                <input type="number" id="age" name="age" value="18" min="14" max="99" required>
+            </div>
+            <div class="form-group">
+                <label for="telegram">Ваш Telegram:</label>
+                <input type="text" id="telegram" name="telegram" placeholder="@Ваш_Нік">
+            </div>
+            <div class="form-group">
+                <label for="discord">Ваш Discord:</label>
+                <input type="text" id="discord" name="discord" placeholder="ВашДискорд#1234" required>
+            </div>
+
+            <div class="buttons">
+                <button type="button" onclick="location.href='index.html'" class="button back">Назад</button>
+                <button type="button" onclick="saveAndGoToPage2()" class="button next">Далі</button>
+                <button type="reset" class="button reset" onclick="resetForm1()">ОЧИСТИТИ ВСЕ</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Сохранение данных первой страницы в localStorage и переход на вторую
+        function saveAndGoToPage2() {
+            const form1Fields = document.querySelectorAll('#contactForm input');
+            let allFieldsValid = true;
+            const dataToSave = {};
+
+            form1Fields.forEach(field => {
+                if (field.hasAttribute('required') && !field.value.trim()) {
+                    allFieldsValid = false;
+                    field.classList.add('error'); // Добавляем класс для подсветки
+                } else {
+                    field.classList.remove('error');
+                }
+                dataToSave[field.name] = field.value;
+            });
+
+            if (!allFieldsValid) {
+                alert('Будь ласка, заповніть всі обов\'язкові поля.');
+                return;
+            }
+
+            localStorage.setItem('form1Data', JSON.stringify(dataToSave));
+            window.location.href = 'form-page2.html';
+        }
+
+        // Загрузка данных при возвращении на страницу 1 (для удобства пользователя)
+        document.addEventListener('DOMContentLoaded', () => {
+            const form1Data = JSON.parse(localStorage.getItem('form1Data'));
+            if (form1Data) {
+                for (const key in form1Data) {
+                    const field = document.getElementById(key);
+                    if (field) {
+                        field.value = form1Data[key];
+                    }
+                }
+            }
+        });
+
+        // Очистка формы 1
+        function resetForm1() {
+            document.getElementById('contactForm').reset();
+            localStorage.removeItem('form1Data');
+            document.querySelectorAll('#contactForm input').forEach(field => {
+                field.classList.remove('error');
+            });
+        }
+    </script>
+</body>
+</html>

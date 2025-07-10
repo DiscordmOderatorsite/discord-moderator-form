@@ -1,0 +1,275 @@
+body {
+    background-color: #1a1a2e; /* Очень темный фон */
+    color: #e0e0e0; /* Светлый текст для основного содержимого */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Более современный шрифт */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Занимает всю высоту viewport */
+    margin: 0;
+    padding: 20px; /* Немного отступа по краям */
+    box-sizing: border-box; /* Для удобства расчета ширины/высоты */
+}
+
+.container {
+    background-color: #2a2a4a; /* Темно-синий/фиолетовый фон для контейнера */
+    padding: 30px 40px; /* Увеличил отступы внутри */
+    border-radius: 12px; /* Более скругленные углы */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+    width: 100%;
+    max-width: 650px; /* Шире, чтобы вместить больше текста/полей */
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #f0f0f0; /* Почти белый для заголовков */
+    margin-bottom: 30px;
+    font-size: 2.2em; /* Крупнее заголовок */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Легкая тень для заголовка */
+}
+
+/* Стили для приветственной страницы */
+.welcome-page .welcome-text {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.welcome-page .warning-text {
+    font-size: 0.95em;
+    color: #ffcc00; /* Желтый для предупреждений */
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+
+.form-group {
+    margin-bottom: 25px; /* Увеличил отступы между группами */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px; /* Отступ между лейблом и полем */
+    font-weight: bold;
+    color: #c0c0c0; /* Чуть светлее для лейблов */
+    font-size: 1.05em;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="number"],
+textarea {
+    width: calc(100% - 24px); /* Учитываем padding + border */
+    padding: 12px;
+    border: 1px solid #555; /* Средний серый для обводки */
+    border-radius: 6px; /* Чуть более скругленные углы */
+    background-color: #3a3a5a; /* Темнее для полей ввода */
+    color: #f0f0f0; /* Светлый текст внутри полей */
+    font-size: 1.1em; /* Размер шрифта в полях */
+    box-sizing: border-box; /* Важно для ширины */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #ff8c00; /* Оранжевая обводка при фокусе */
+    box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.3); /* Оранжевая тень при фокусе */
+    outline: none; /* Убираем стандартную обводку браузера */
+}
+
+/* Стиль для полей с ошибкой валидации */
+input.error, textarea.error {
+    border-color: #dc3545; /* Красная обводка */
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3); /* Красная тень */
+}
+
+
+textarea {
+    resize: vertical; /* Разрешить изменять размер по вертикали */
+    min-height: 80px; /* Минимальная высота для текстовых полей */
+}
+
+/* Стили для слайдеров (input type="range") */
+input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none; /* Сброс стандартных стилей */
+    appearance: none;
+    height: 8px; /* Толщина трека */
+    background: #555; /* Цвет трека */
+    outline: none;
+    opacity: 0.8;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+    border-radius: 5px;
+    margin-top: 5px; /* Отступ от лейбла */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px; /* Размер ползунка */
+    height: 24px;
+    border-radius: 50%;
+    background: #ff8c00; /* Оранжевый цвет ползунка */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 2px solid #f0f0f0; /* Белая обводка */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ff8c00;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 2px solid #f0f0f0;
+}
+
+/* Стили для радио-кнопок */
+.radio-group p {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #c0c0c0;
+    font-size: 1.05em;
+}
+
+.radio-group label {
+    display: inline-flex; /* Для выравнивания текста и радио-кнопки */
+    align-items: center;
+    margin-right: 25px; /* Отступ между вариантами */
+    cursor: pointer;
+    font-weight: normal; /* Лейблы радио не жирные */
+    color: #e0e0e0;
+}
+
+.radio-group input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #3a3a5a;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.radio-group input[type="radio"]:checked {
+    border-color: #ff8c00; /* Оранжевая обводка при выборе */
+    background-color: #ff8c00; /* Оранжевый фон при выборе */
+}
+
+.radio-group input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #f0f0f0; /* Светлая точка внутри */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Кнопки */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px; /* Отступ сверху */
+    gap: 15px; /* Расстояние между кнопками */
+    flex-wrap: wrap; /* Для переноса кнопок на меньших экранах */
+}
+
+.buttons.single-button {
+    justify-content: center; /* Для одной кнопки по центру */
+}
+
+.button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px; /* Более скругленные углы */
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    color: white; /* Белый текст для всех кнопок */
+    text-align: center;
+    display: inline-block;
+    flex-grow: 1; /* Чтобы кнопки занимали доступное место */
+    max-width: 200px; /* Максимальная ширина кнопки */
+}
+
+.button.back {
+    background-color: #ff8c00; /* Оранжевый */
+}
+
+.button.back:hover {
+    background-color: #e07b00; /* Темнее оранжевый */
+    transform: translateY(-2px); /* Легкий эффект при наведении */
+}
+
+.button.next, .button[type="submit"] {
+    background-color: #28a745; /* Зеленый */
+}
+
+.button.next:hover, .button[type="submit"]:hover {
+    background-color: #218838; /* Темнее зеленый */
+    transform: translateY(-2px);
+}
+
+.button.reset {
+    background-color: #dc3545; /* Красный */
+}
+
+.button.reset:hover {
+    background-color: #c82333; /* Темнее красный */
+    transform: translateY(-2px);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px 30px;
+        margin: 10px; /* Меньше отступ по бокам на мобильных */
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .button {
+        flex-basis: calc(50% - 7.5px); /* Две кнопки в ряд на мобильных */
+        margin-bottom: 10px; /* Отступ между кнопками, если они переносятся */
+    }
+    .buttons.single-button .button {
+        flex-basis: auto; /* Для одной кнопки снова автоширина */
+    }
+    .buttons {
+        justify-content: center; /* Центрируем кнопки на меньших экранах */
+    }
+}
+
+@media (max-width: 480px) {
+    .buttons {
+        flex-direction: column; /* Кнопки в столбец на очень маленьких экранах */
+        align-items: center; /* Центрируем их */
+    }
+    .button {
+        width: 100%; /* Полная ширина для кнопок в столбце */
+        max-width: 250px; /* Ограничиваем, чтобы не были слишком широкими */
+        margin-bottom: 15px;
+    }
+    .buttons.single-button .button {
+        width: auto; /* Для одной кнопки снова автоширина */
+    }
+}

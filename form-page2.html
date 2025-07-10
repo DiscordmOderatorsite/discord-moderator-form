@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Про себе</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container form-page">
+        <h1>Про себе</h1>
+        <form id="aboutForm">
+            <div class="form-group">
+                <label for="adequacyRating">Як би ви оцінили свою адекватність? <span id="adequacyValue">10</span></label>
+                <input type="range" id="adequacyRating" name="adequacyRating" min="1" max="10" value="10" oninput="document.getElementById('adequacyValue').innerText = this.value">
+            </div>
+
+            <div class="form-group">
+                <label for="stressResistance">Як би ви оцінили свою стресостійкість? <span id="stressValue">5</span></label>
+                <input type="range" id="stressResistance" name="stressResistance" min="1" max="10" value="5" oninput="document.getElementById('stressValue').innerText = this.value">
+            </div>
+
+            <div class="form-group">
+                <label for="newMaterialSpeed">Наскільки швидко засвоюєте новий матеріал? <span id="materialValue">5</span></label>
+                <input type="range" id="newMaterialSpeed" name="newMaterialSpeed" min="1" max="10" value="5" oninput="document.getElementById('materialValue').innerText = this.value">
+            </div>
+
+            <div class="form-group">
+                <label for="positiveTraits">Назвіть три позитивні риси вашого характеру:</label>
+                <textarea id="positiveTraits" name="positiveTraits" rows="3" placeholder="Наприклад: відповідальний, комунікабельний, цілеспрямований" required></textarea>
+            </div>
+             <div class="form-group">
+                <label for="negativeTraits">Назвіть три негативні риси вашого характеру:</label>
+                <textarea id="negativeTraits" name="negativeTraits" rows="3" placeholder="Наприклад: нетерплячий, іноді лінивий, перфекціоніст" required></textarea>
+            </div>
+
+            <div class="form-group radio-group">
+                <p>Чи були у вас блокування на Discord-серверах Ukraine GTA / Ukraine GTA V?</p>
+                <label><input type="radio" name="discordBlocked" value="yes"> Так</label>
+                <label><input type="radio" name="discordBlocked" value="no" checked> Ні</label>
+                <input type="text" id="blockReason" name="blockReason" placeholder="Якщо так, то за що саме?" style="display:none; margin-top: 10px;">
+            </div>
+
+            <div class="form-group radio-group">
+                <p>Чи займали ви раніше посаду модератора Discord або схожу посаду?</p>
+                <label><input type="radio" name="wasModerator" value="yes"> Так</label>
+                <label><input type="radio" name="wasModerator" value="no" checked> Ні</label>
+            </div>
+
+            <div class="form-group radio-group">
+                <p>Чи вважаєте ви себе командним гравцем?</p>
+                <label><input type="radio" name="teamPlayer" value="yes"> Так</label>
+                <label><input type="radio" name="teamPlayer" value="no" checked> Ні</label>
+            </div>
+
+            <div class="form-group radio-group">
+                <p>Чи маєте ви мікрофон для виконання щоденної норми на посаді Moderator Discord в голосовому каналі?</p>
+                <label><input type="radio" name="hasMicrophone" value="yes"> Так</label>
+                <label><input type="radio" name="hasMicrophone" value="no" checked> Ні</label>
+            </div>
+
+            <div class="form-group">
+                <label for="hoursPerDay">Скільки годин можете приділяти помозі M.D.?</label>
+                <input type="number" id="hoursPerDay" name="hoursPerDay" value="2" min="1" max="24" required>
+            </div>
+
+            <div class="form-group radio-group">
+                <p>Чи готові ви отримати ЧС (чорний список) на посаду модератора Discord у разі, якщо не пройдете стажування протягом 14 днів?</p>
+                <label><input type="radio" name="gotCS" value="yes" checked> Так</label>
+                <label><input type="radio" name="gotCS" value="no"> Ні</label>
+            </div>
+
+            <div class="buttons">
+                <button type="button" onclick="location.href='form-page1.html'" class="button back">Назад</button>
+                <button type="submit" id="submitForm" class="button next">Відправити</button>
+                <button type="reset" class="button reset" onclick="clearAllData()">ОЧИСТИТИ ВСЕ</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxxmAskEFrU9U7ION9Zz9REB7I8D_laUi4cmFdjBH6UUSnmWRc7vkFOtUcEd7WS7dfMMg/exec'; // Вставьте сюда URL из Apps Script
+
+        // JavaScript для показа/скрытия поля причины блокировки
+        document.querySelectorAll('input[name="discordBlocked"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const blockReasonInput = document.getElementById('blockReason');
+                if (this.value === 'yes') {
+                    blockReasonInput.style.display = 'block';
+                    blockReasonInput.setAttribute('required', 'required');
+                } else {
+                    blockReasonInput.style.display = 'none';
+                    blockReasonInput.removeAttribute('required');
+                    blockReasonInput.value = ''; // Очистить поле, если не требуется
+                }
+            });
+        });
+        // Инициализация состояния при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialBlockReasonRadio = document.querySelector('input[name="discordBlocked"]:checked');
+            if (initialBlockReasonRadio && initialBlockReasonRadio.value === 'yes') {
+                document.getElementById('blockReason').style.display = 'block';
+                document.getElementById('blockReason').setAttribute('required', 'required');
+            } else {
+                document.getElementById('blockReason').style.display = 'none';
+                document.getElementById('blockReason').removeAttribute('required');
+            }
+
+            // Обновление значений слайдеров при загрузке (если они не 10,5,5 по умолчанию)
+            document.getElementById('adequacyValue').innerText = document.getElementById('adequacyRating').value;
+            document.getElementById('stressValue').innerText = document.getElementById('stressResistance').value;
+            document.getElementById('materialValue').innerText = document.getElementById('newMaterialSpeed').value;
+        });
+
+
+        // JavaScript для отправки данных (на второй странице)
+        document.getElementById('submitForm').addEventListener('click', async (event) => {
+            event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+            const form2Fields = document.querySelectorAll('#aboutForm input, #aboutForm textarea');
+            let allFieldsValid = true;
+            const form2Data = {};
+
+            form2Fields.forEach(field => {
+                if (field.type === 'radio') {
+                    // Проверяем, выбрана ли радио-кнопка в группе
+                    const selectedRadio = document.querySelector(`input[name="${field.name}"]:checked`);
+                    if (selectedRadio === null) {
+                        allFieldsValid = false;
+                        // Можно добавить подсветку группы радио-кнопок, если хотите
+                    } else {
+                        form2Data[field.name] = selectedRadio.value;
+                    }
+                } else if (field.hasAttribute('required') && !field.value.trim()) {
+                    allFieldsValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                    form2Data[field.name] = field.value;
+                }
+            });
+
+            if (!allFieldsValid) {
+                alert('Будь ласка, заповніть всі обов\'язкові поля.');
+                return;
+            }
+
+            // Собираем данные с первой страницы из localStorage
+            const form1Data = JSON.parse(localStorage.getItem('form1Data')) || {};
+
+            // Объединяем все данные
+            const formData = new FormData();
+            for (const key in form1Data) {
+                formData.append(key, form1Data[key]);
+            }
+            for (const key in form2Data) {
+                formData.append(key, form2Data[key]);
+            }
+
+            // Отправляем данные в Google Apps Script
+            try {
+                const response = await fetch(SCRIPT_WEB_APP_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert('Заявка успешно отправлена!');
+                    localStorage.removeItem('form1Data'); // Очищаем данные из localStorage
+                    window.location.href = 'success.html'; // Перенаправляем на страницу успеха
+                } else {
+                    alert('Ошибка при отправке заявки: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Ошибка сети или сервера:', error);
+                alert('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.');
+            }
+        });
+
+        // Функция для очистки всех данных
+        function clearAllData() {
+            localStorage.removeItem('form1Data'); // Очищаем данные первой страницы
+            document.getElementById('aboutForm').reset(); // Сбрасываем текущую форму
+
+            // Сброс специфических элементов и их отображения
+            document.getElementById('adequacyRating').value = 10;
+            document.getElementById('stressResistance').value = 5;
+            document.getElementById('newMaterialSpeed').value = 5;
+            document.getElementById('positiveTraits').value = '';
+            document.getElementById('negativeTraits').value = '';
+
+            document.querySelector('input[name="discordBlocked"][value="no"]').checked = true;
+            document.getElementById('blockReason').style.display = 'none';
+            document.getElementById('blockReason').value = '';
+
+            document.querySelector('input[name="wasModerator"][value="no"]').checked = true;
+            document.querySelector('input[name="teamPlayer"][value="no"]').checked = true;
+            document.querySelector('input[name="hasMicrophone"][value="no"]').checked = true;
+            document.getElementById('hoursPerDay').value = 2;
+            document.querySelector('input[name="gotCS"][value="yes"]').checked = true;
+
+            // Обновление значений range
+            document.getElementById('adequacyValue').innerText = 10;
+            document.getElementById('stressValue').innerText = 5;
+            document.getElementById('materialValue').innerText = 5;
+
+            // Удаление классов ошибок
+            document.querySelectorAll('#aboutForm input, #aboutForm textarea').forEach(field => {
+                field.classList.remove('error');
+            });
+        }
+    </script>
+</body>
+</html>

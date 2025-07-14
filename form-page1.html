@@ -28,19 +28,19 @@
             </div>
 
             <div class="form-group">
-                <label for="nickname">Ваш ігровий NickName: <span class="required-star">*</span></label>
+                <label for="nickname">Призвіще, імʼя та по батькові: <span class="required-star">*</span></label>
                 <input type="text" id="nickname" name="nickname" required>
                 <div class="error-message" id="nicknameError"></div>
             </div>
 
             <div class="form-group">
-                <label for="email">Ваша електронна пошта (необов'язково):</label>
+                <label for="email">Ваша електронна пошта:</label>
                 <input type="email" id="email" name="email">
             </div>
 
             <div class="buttons">
                 <button type="button" class="button back" onclick="location.href='index.html'">Назад</button>
-                <button type="submit" class="button next">Дальше</button>
+                <button type="submit" class="button next">Далі</button>
             </div>
         </form>
     </div>
@@ -57,11 +57,11 @@
             const nicknameError = document.getElementById('nicknameError');
 
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Предотвращаем стандартную отправку формы
+                event.preventDefault(); 
 
                 let isValid = true;
 
-                // Валидация Discord Tag
+           
                 if (!discordTagInput.value.trim()) {
                     displayError(discordTagInput, discordTagError, 'Будь ласка, введіть ваш Discord Tag.');
                     isValid = false;
@@ -69,12 +69,12 @@
                     hideError(discordTagInput, discordTagError);
                 }
 
-                // Валидация возраста
+                
                 const age = parseInt(ageInput.value);
-                if (isNaN(age) || age < 1 || age > 99) { // Проверяем на число, мин/макс
+                if (isNaN(age) || age < 1 || age > 99) { 
                     displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
                     isValid = false;
-                } else if (age > 14) { // Валидация по требованию "виключно до 14 років!"
+                } else if (age > 14) {
                     displayError(ageInput, ageError, 'На жаль, вік має бути не більше 14 років.');
                     isValid = false;
                 } else {
@@ -84,7 +84,7 @@
 
                 // Валидация NickName
                 if (!nicknameInput.value.trim()) {
-                    displayError(nicknameInput, nicknameError, 'Будь ласка, введіть ваш ігровий NickName.');
+                    displayError(nicknameInput, nicknameError, 'Будь ласка, введіть ваші імʼя, фамілію та по батькові.');
                     isValid = false;
                 } else {
                     hideError(nicknameInput, nicknameError);

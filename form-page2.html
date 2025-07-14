@@ -91,11 +91,11 @@
                 } else {
                     blockReasonInput.style.display = 'none';
                     blockReasonInput.removeAttribute('required');
-                    blockReasonInput.value = ''; // Очистить поле, если не требуется
+                    blockReasonInput.value = '';
                 }
             });
         });
-        // Инициализация состояния при загрузке страницы
+        
         document.addEventListener('DOMContentLoaded', () => {
             const initialBlockReasonRadio = document.querySelector('input[name="discordBlocked"]:checked');
             if (initialBlockReasonRadio && initialBlockReasonRadio.value === 'yes') {
@@ -106,7 +106,6 @@
                 document.getElementById('blockReason').removeAttribute('required');
             }
 
-            // Обновление значений слайдеров при загрузке (если они не 10,5,5 по умолчанию)
             document.getElementById('adequacyValue').innerText = document.getElementById('adequacyRating').value;
             document.getElementById('stressValue').innerText = document.getElementById('stressResistance').value;
             document.getElementById('materialValue').innerText = document.getElementById('newMaterialSpeed').value;
@@ -115,7 +114,7 @@
 
         // JavaScript для отправки данных (на второй странице)
         document.getElementById('submitForm').addEventListener('click', async (event) => {
-            event.preventDefault(); // Предотвращаем стандартную отправку формы
+            event.preventDefault();
 
             const form2Fields = document.querySelectorAll('#aboutForm input, #aboutForm textarea');
             let allFieldsValid = true;
@@ -126,7 +125,6 @@
                     const selectedRadio = document.querySelector(`input[name="${field.name}"]:checked`);
                     if (selectedRadio === null) {
                         allFieldsValid = false;
-                        // Можно добавить подсветку группы радио-кнопок, если хотите
                     } else {
                         form2Data[field.name] = selectedRadio.value;
                     }
@@ -147,16 +145,18 @@
             // Собираем данные с первой страницы из localStorage
             const form1Data = JSON.parse(localStorage.getItem('form1Data')) || {};
 
-            // Объединяем все данные
+            // Объединяем все данные для отправки
+            const combinedData = { ...form1Data, ...form2Data };
+            
+            // --- ДОБАВЛЕНО ДЛЯ ОТЛАДКИ ---
+            console.log('Все данные для отправки:', combinedData);
+            // ---------------------------
+
             const formData = new FormData();
-            for (const key in form1Data) {
-                formData.append(key, form1Data[key]);
-            }
-            for (const key in form2Data) {
-                formData.append(key, form2Data[key]);
+            for (const key in combinedData) {
+                formData.append(key, combinedData[key]);
             }
 
-            // Отправляем данные в Google Apps Script
             try {
                 const response = await fetch(SCRIPT_WEB_APP_URL, {
                     method: 'POST',
@@ -167,8 +167,8 @@
 
                 if (result.status === 'success') {
                     alert('Заявка успешно отправлена!');
-                    localStorage.removeItem('form1Data'); // Очищаем данные из localStorage после успешной отправки
-                    window.location.href = 'success.html'; // Перенаправляем на страницу успеха
+                    localStorage.removeItem('form1Data');
+                    window.location.href = 'success.html';
                 } else {
                     alert('Ошибка при отправке заявки: ' + result.message);
                 }
@@ -178,12 +178,9 @@
             }
         });
 
-        // Функция для очистки всех данных
         function clearAllData() {
-            // localStorage.removeItem('form1Data'); // ЭТУ СТРОКУ УДАЛЯЕМ ИЛИ КОММЕНТИРУЕМ, так как она уже в submit-обработчике
-            document.getElementById('aboutForm').reset(); // Сбрасываем текущую форму
+            document.getElementById('aboutForm').reset();
 
-            // Сброс специфических элементов и их отображения
             document.getElementById('adequacyRating').value = 10;
             document.getElementById('stressResistance').value = 5;
             document.getElementById('newMaterialSpeed').value = 5;
@@ -200,15 +197,14 @@
             document.getElementById('hoursPerDay').value = 2;
             document.querySelector('input[name="gotCS"][value="yes"]').checked = true;
 
-            // Обновление значений range
             document.getElementById('adequacyValue').innerText = 10;
             document.getElementById('stressValue').innerText = 5;
             document.getElementById('materialValue').innerText = 5;
 
-            // Удаление классов ошибок
             document.querySelectorAll('#aboutForm input, #aboutForm textarea').forEach(field => {
                 field.classList.remove('error');
             });
+            // !Важно: localStorage.removeItem('form1Data'); здесь не нужен, он уже есть в submit
         }
     </script>
 </body>

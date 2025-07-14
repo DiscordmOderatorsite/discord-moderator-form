@@ -5,87 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Контактна інформація</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container form-page">
-        <h1>Контактна інформація</h1>
+        <div class="header-with-logo">
+            <h1>Контактна інформація</h1>
+            <img src="https://raw.githubusercontent.com/DiscordmOderatorsite/discord-moderator-form/refs/heads/main/gta5-logo.webp" alt="GTA 5 Logo" class="header-logo">
+        </div>
+
         <form id="contactForm">
             <div class="form-group">
-                <label for="email">Ваша електронна адреса:</label>
-                <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+                <label for="discordTag">Ваш Discord Tag: <span class="required-star">*</span></label>
+                <input type="text" id="discordTag" name="discordTag" placeholder="Наприклад: ВашНік#1234" required>
+                <div class="error-message" id="discordTagError"></div>
             </div>
+
             <div class="form-group">
-                <label for="fullname">Прізвище, ім’я та по батькові:</label>
-                <input type="text" id="fullname" name="fullname" placeholder="Іванов Іван Іванович" required>
+                <label for="age">Ваш вік: <span class="required-star">*</span></label>
+                <input type="number" id="age" name="age" min="1" max="99" required>
+                <div class="error-message" id="ageError"></div>
             </div>
+
             <div class="form-group">
-                <label for="age">Ваш вік:</label>
-                <input type="number" id="age" name="age" value="18" min="14" max="99" required>
+                <label for="nickname">Ваш ігровий NickName: <span class="required-star">*</span></label>
+                <input type="text" id="nickname" name="nickname" required>
+                <div class="error-message" id="nicknameError"></div>
             </div>
+
             <div class="form-group">
-                <label for="telegram">Ваш Telegram:</label>
-                <input type="text" id="telegram" name="telegram" placeholder="@Ваш_Нік">
-            </div>
-            <div class="form-group">
-                <label for="discord">Ваш Discord:</label>
-                <input type="text" id="discord" name="discord" placeholder="ВашДискорд#1234" required>
+                <label for="email">Ваша електронна пошта (необов'язково):</label>
+                <input type="email" id="email" name="email">
             </div>
 
             <div class="buttons">
-                <button type="button" onclick="location.href='index.html'" class="button back">Назад</button>
-                <button type="button" onclick="saveAndGoToPage2()" class="button next">Далі</button>
-                <button type="reset" class="button reset" onclick="resetForm1()">ОЧИСТИТИ ВСЕ</button>
+                <button type="button" class="button back" onclick="location.href='index.html'">Назад</button>
+                <button type="submit" class="button next">Дальше</button>
             </div>
         </form>
     </div>
 
     <script>
-      
-        function saveAndGoToPage2() {
-            const form1Fields = document.querySelectorAll('#contactForm input');
-            let allFieldsValid = true;
-            const dataToSave = {};
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const discordTagInput = document.getElementById('discordTag');
+            const ageInput = document.getElementById('age');
+            const nicknameInput = document.getElementById('nickname');
 
-            form1Fields.forEach(field => {
-                if (field.hasAttribute('required') && !field.value.trim()) {
-                    allFieldsValid = false;
-                    field.classList.add('error'); /
+            const discordTagError = document.getElementById('discordTagError');
+            const ageError = document.getElementById('ageError');
+            const nicknameError = document.getElementById('nicknameError');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+                let isValid = true;
+
+                // Валидация Discord Tag
+                if (!discordTagInput.value.trim()) {
+                    displayError(discordTagInput, discordTagError, 'Будь ласка, введіть ваш Discord Tag.');
+                    isValid = false;
                 } else {
-                    field.classList.remove('error');
+                    hideError(discordTagInput, discordTagError);
                 }
-                dataToSave[field.name] = field.value;
+
+                // Валидация возраста
+                const age = parseInt(ageInput.value);
+                if (isNaN(age) || age < 1 || age > 99) { // Проверяем на число, мин/макс
+                    displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
+                    isValid = false;
+                } else if (age > 14) { // Валидация по требованию "виключно до 14 років!"
+                    displayError(ageInput, ageError, 'На жаль, вік має бути не більше 14 років.');
+                    isValid = false;
+                } else {
+                    hideError(ageInput, ageError);
+                }
+
+
+                // Валидация NickName
+                if (!nicknameInput.value.trim()) {
+                    displayError(nicknameInput, nicknameError, 'Будь ласка, введіть ваш ігровий NickName.');
+                    isValid = false;
+                } else {
+                    hideError(nicknameInput, nicknameError);
+                }
+
+                // Если все поля валидны, переходим к следующей странице
+                if (isValid) {
+                    // Здесь вы можете сохранить данные, например, в localStorage, если нужно
+                    localStorage.setItem('discordTag', discordTagInput.value);
+                    localStorage.setItem('age', ageInput.value);
+                    localStorage.setItem('nickname', nicknameInput.value);
+                    localStorage.setItem('email', document.getElementById('email').value);
+
+                    location.href = 'form-page2.html';
+                }
             });
 
-            if (!allFieldsValid) {
-                alert('Будь ласка, заповніть всі обов\'язкові поля.');
-                return;
+            // Вспомогательные функции для отображения/скрытия ошибок
+            function displayError(inputElement, errorElement, message) {
+                inputElement.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
             }
 
-            localStorage.setItem('form1Data', JSON.stringify(dataToSave));
-            window.location.href = 'form-page2.html';
-        }
-
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const form1Data = JSON.parse(localStorage.getItem('form1Data'));
-            if (form1Data) {
-                for (const key in form1Data) {
-                    const field = document.getElementById(key);
-                    if (field) {
-                        field.value = form1Data[key];
-                    }
-                }
+            function hideError(inputElement, errorElement) {
+                inputElement.classList.remove('error');
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
             }
         });
-
-        
-        function resetForm1() {
-            document.getElementById('contactForm').reset();
-            localStorage.removeItem('form1Data');
-            document.querySelectorAll('#contactForm input').forEach(field => {
-                field.classList.remove('error');
-            });
-        }
     </script>
 </body>
 </html>

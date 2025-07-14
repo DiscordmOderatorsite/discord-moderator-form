@@ -79,9 +79,9 @@
     </div>
 
     <script>
-        const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxxmAskEFrU9U7ION9Zz9REB7I8D_laUi4cmFdjBH6UUSnmWRc7vkFOtUcEd7WS7dfMMg/exec'; // Вставьте сюда URL из Apps Script
+        // !!! ПРОВЕРЬТЕ ЭТОТ URL ЕЩЕ РАЗ !!!
+        const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxxmAskEFrU9U7ION9Zz9REB7I8D_laUi4cmFdjBH6UUSnmWRc7vkFOtUcEd7WS7dfMMg/exec'; 
 
-        // JavaScript для показа/скрытия поля причины блокировки
         document.querySelectorAll('input[name="discordBlocked"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const blockReasonInput = document.getElementById('blockReason');
@@ -112,7 +112,6 @@
         });
 
 
-        // JavaScript для отправки данных (на второй странице)
         document.getElementById('submitForm').addEventListener('click', async (event) => {
             event.preventDefault();
 
@@ -142,15 +141,15 @@
                 return;
             }
 
-            // Собираем данные с первой страницы из localStorage
+            // --- КРИТИЧЕСКИЙ БЛОК: СОБИРАЕМ ДАННЫЕ С ПЕРВОЙ СТРАНИЦЫ ИЗ LOCALSTORAGE ---
             const form1Data = JSON.parse(localStorage.getItem('form1Data')) || {};
 
             // Объединяем все данные для отправки
             const combinedData = { ...form1Data, ...form2Data };
             
-            // --- ДОБАВЛЕНО ДЛЯ ОТЛАДКИ ---
-            console.log('Все данные для отправки:', combinedData);
-            // ---------------------------
+            // !!! ВАЖНО: ВЫВОД В КОНСОЛЬ ДЛЯ ОТЛАДКИ !!!
+            console.log('Все данные для отправки:', combinedData); 
+            // !!! СКОПИРУЙТЕ ЭТОТ ВЫВОД ИЗ КОНСОЛИ ПОСЛЕ ПОПЫТКИ ОТПРАВКИ !!!
 
             const formData = new FormData();
             for (const key in combinedData) {
@@ -204,7 +203,6 @@
             document.querySelectorAll('#aboutForm input, #aboutForm textarea').forEach(field => {
                 field.classList.remove('error');
             });
-            // !Важно: localStorage.removeItem('form1Data'); здесь не нужен, он уже есть в submit
         }
     </script>
 </body>

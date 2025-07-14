@@ -17,31 +17,31 @@
         <form id="contactForm">
             <div class="form-group">
                 <label for="email"><i class="fas fa-envelope icon-inline"></i> Ваша електронна адреса: <span class="required-star">*</span></label>
-                <input type="email" id="email" name="email" placeholder="Наприклад: вашапошта@gmail.com" required>
+                <input type="email" id="email" name="Email" placeholder="Наприклад: вашапошта@gmail.com" required>
                 <div class="error-message" id="emailError"></div>
             </div>
 
             <div class="form-group">
                 <label for="fullName"><i class="fas fa-user icon-inline"></i> Прізвище, ім'я та по батькові: <span class="required-star">*</span></label>
-                <input type="text" id="fullName" name="fullName" placeholder="Наприклад: Іванов Іван Іванович" required>
+                <input type="text" id="fullName" name="FullName" placeholder="Наприклад: Іванов Іван Іванович" required>
                 <div class="error-message" id="fullNameError"></div>
             </div>
 
             <div class="form-group">
                 <label for="age"><i class="fas fa-calendar-alt icon-inline"></i> Ваш вік: <span class="required-star">*</span></label>
-                <input type="number" id="age" name="age" min="1" max="99" required>
+                <input type="number" id="age" name="Age" min="1" max="99" required>
                 <div class="error-message" id="ageError"></div>
             </div>
 
             <div class="form-group">
                 <label for="telegram"><i class="fab fa-telegram-plane icon-inline"></i> Ваш Telegram: <span class="required-star">*</span></label>
-                <input type="text" id="telegram" name="telegram" placeholder="Наприклад: @ВашНік" required>
+                <input type="text" id="telegram" name="Telegram" placeholder="Наприклад: @ВашНік" required>
                 <div class="error-message" id="telegramError"></div>
             </div>
 
             <div class="form-group">
                 <label for="discordTag"><i class="fab fa-discord icon-inline"></i> Ваш Discord: <span class="required-star">*</span></label>
-                <input type="text" id="discordTag" name="discordTag" placeholder="Наприклад: ВашНік#1234" required>
+                <input type="text" id="discordTag" name="Discord" placeholder="Наприклад: ВашНік#1234" required>
                 <div class="error-message" id="discordTagError"></div>
             </div>
 
@@ -122,13 +122,17 @@
                 
                 // Если все поля валидны, сохраняем данные и переходим
                 if (isValid) {
-                    // Сохраняем данные в localStorage с ключами, которые соответствуют заголовкам столбцов в таблице
-                    // Используем name-атрибуты полей как ключи для localStorage
-                    localStorage.setItem('Email', emailInput.value);
-                    localStorage.setItem('FullName', fullNameInput.value);
-                    localStorage.setItem('Age', ageInput.value);
-                    localStorage.setItem('Telegram', telegramInput.value);
-                    localStorage.setItem('Discord', discordTagInput.value); // Здесь name="discordTag" -> localStorage 'Discord'
+                    // Создаем объект для сохранения данных
+                    const form1Data = {
+                        // Используем name атрибуты как ключи, которые должны соответствовать заголовкам столбцов в таблице
+                        'Email': emailInput.value,
+                        'FullName': fullNameInput.value,
+                        'Age': ageInput.value,
+                        'Telegram': telegramInput.value,
+                        'Discord': discordTagInput.value
+                    };
+                    // Сохраняем объект как JSON-строку в localStorage под ключом 'form1Data'
+                    localStorage.setItem('form1Data', JSON.stringify(form1Data));
 
                     location.href = 'form-page2.html'; // Переходим на следующую страницу
                 }
@@ -162,6 +166,7 @@
                 hideError(ageInput, ageError);
                 hideError(telegramInput, telegramError);
                 hideError(discordTagInput, discordTagError);
+                localStorage.removeItem('form1Data'); // Очищаем данные первой страницы при сбросе
             }
             window.resetForm = resetForm; // Делаем функцию доступной из HTML
         });

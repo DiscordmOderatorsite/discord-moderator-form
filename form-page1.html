@@ -122,11 +122,13 @@
                 
                 // Если все поля валидны, сохраняем данные и переходим
                 if (isValid) {
-                    localStorage.setItem('email', emailInput.value);
-                    localStorage.setItem('fullName', fullNameInput.value);
-                    localStorage.setItem('age', ageInput.value);
-                    localStorage.setItem('telegram', telegramInput.value);
-                    localStorage.setItem('discordTag', discordTagInput.value);
+                    // Сохраняем данные в localStorage с ключами, которые соответствуют заголовкам столбцов в таблице
+                    // Используем name-атрибуты полей как ключи для localStorage
+                    localStorage.setItem('Email', emailInput.value);
+                    localStorage.setItem('FullName', fullNameInput.value);
+                    localStorage.setItem('Age', ageInput.value);
+                    localStorage.setItem('Telegram', telegramInput.value);
+                    localStorage.setItem('Discord', discordTagInput.value); // Здесь name="discordTag" -> localStorage 'Discord'
 
                     location.href = 'form-page2.html'; // Переходим на следующую страницу
                 }

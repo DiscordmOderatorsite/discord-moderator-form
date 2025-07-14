@@ -40,7 +40,7 @@
     </div>
 
     <script>
-        // Сохранение данных первой страницы в localStorage и переход на вторую
+      
         function saveAndGoToPage2() {
             const form1Fields = document.querySelectorAll('#contactForm input');
             let allFieldsValid = true;
@@ -49,7 +49,7 @@
             form1Fields.forEach(field => {
                 if (field.hasAttribute('required') && !field.value.trim()) {
                     allFieldsValid = false;
-                    field.classList.add('error'); // Добавляем класс для подсветки
+                    field.classList.add('error'); /
                 } else {
                     field.classList.remove('error');
                 }
@@ -65,7 +65,7 @@
             window.location.href = 'form-page2.html';
         }
 
-        // Загрузка данных при возвращении на страницу 1 (для удобства пользователя)
+        
         document.addEventListener('DOMContentLoaded', () => {
             const form1Data = JSON.parse(localStorage.getItem('form1Data'));
             if (form1Data) {
@@ -78,7 +78,7 @@
             }
         });
 
-        // Очистка формы 1
+        
         function resetForm1() {
             document.getElementById('contactForm').reset();
             localStorage.removeItem('form1Data');

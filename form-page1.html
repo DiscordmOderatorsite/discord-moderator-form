@@ -57,14 +57,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('contactForm');
             
-            // Получаем ссылки на элементы ввода
             const emailInput = document.getElementById('email');
             const fullNameInput = document.getElementById('fullName');
             const ageInput = document.getElementById('age');
             const telegramInput = document.getElementById('telegram');
             const discordTagInput = document.getElementById('discordTag');
 
-            // Получаем ссылки на элементы для сообщений об ошибках
             const emailError = document.getElementById('emailError');
             const fullNameError = document.getElementById('fullNameError');
             const ageError = document.getElementById('ageError');
@@ -72,18 +70,16 @@
             const discordTagError = document.getElementById('discordTagError');
 
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Предотвращаем стандартную отправку формы
+                event.preventDefault();
 
                 let isValid = true;
 
-                // Сброс всех сообщений об ошибках перед новой валидацией
                 hideError(emailInput, emailError);
                 hideError(fullNameInput, fullNameError);
                 hideError(ageInput, ageError);
                 hideError(telegramInput, telegramError);
                 hideError(discordTagInput, discordTagError);
 
-                // 1. Валидация Email
                 if (!emailInput.value.trim()) {
                     displayError(emailInput, emailError, 'Будь ласка, введіть вашу електронну адресу.');
                     isValid = false;
@@ -92,53 +88,45 @@
                     isValid = false;
                 }
 
-                // 2. Валидация ФИО
                 if (!fullNameInput.value.trim()) {
                     displayError(fullNameInput, fullNameError, 'Будь ласка, введіть ваше прізвище, ім\'я та по батькові.');
                     isValid = false;
                 }
 
-                // 3. Валидация возраста
                 const age = parseInt(ageInput.value);
                 if (isNaN(age) || age < 1 || age > 99) {
                     displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
                     isValid = false;
-                } else if (age < 14) { // <-- ИЗМЕНЕНО: Возраст должен быть НЕ МЕНЬШЕ 14 лет
+                } else if (age < 14) { // ИСПРАВЛЕНО: Возраст должен быть НЕ МЕНЬШЕ 14 лет
                     displayError(ageInput, ageError, 'На жаль, вік має бути не менше 14 років.');
                     isValid = false;
                 }
 
-                // 4. Валидация Telegram
                 if (!telegramInput.value.trim()) {
                     displayError(telegramInput, telegramError, 'Будь ласка, введіть ваш Telegram нікнейм.');
                     isValid = false;
                 }
 
-                // 5. Валидация Discord Tag
                 if (!discordTagInput.value.trim()) {
                     displayError(discordTagInput, discordTagError, 'Будь ласка, введіть ваш Discord Tag.');
                     isValid = false;
                 }
                 
-                // Если все поля валидны, сохраняем данные и переходим
                 if (isValid) {
-                    // Создаем объект для сохранения данных
                     const form1Data = {
-                        // Используем name атрибуты как ключи, которые должны соответствовать заголовкам столбцов в таблице
                         'Email': emailInput.value,
                         'FullName': fullNameInput.value,
                         'Age': ageInput.value,
                         'Telegram': telegramInput.value,
                         'Discord': discordTagInput.value
                     };
-                    // Сохраняем объект как JSON-строку в localStorage под ключом 'form1Data'
                     localStorage.setItem('form1Data', JSON.stringify(form1Data));
+                    console.log('Данные Form1 сохранены в localStorage:', form1Data); // Для отладки
 
-                    location.href = 'form-page2.html'; // Переходим на следующую страницу
+                    location.href = 'form-page2.html';
                 }
             });
 
-            // Вспомогательные функции для отображения/скрытия ошибок
             function displayError(inputElement, errorElement, message) {
                 inputElement.classList.add('error');
                 errorElement.textContent = message;
@@ -151,24 +139,21 @@
                 errorElement.style.display = 'none';
             }
 
-            // Функция для простой валидации Email
             function isValidEmail(email) {
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(String(email).toLowerCase());
             }
 
-            // Функция для очистки всех полей формы
             function resetForm() {
-                form.reset(); // Сбрасывает все поля формы
-                // Также очищаем сообщения об ошибках, если они были
+                form.reset();
                 hideError(emailInput, emailError);
                 hideError(fullNameInput, fullNameError);
                 hideError(ageInput, ageError);
                 hideError(telegramInput, telegramError);
                 hideError(discordTagInput, discordTagError);
-                localStorage.removeItem('form1Data'); // Очищаем данные первой страницы при сбросе
+                localStorage.removeItem('form1Data');
             }
-            window.resetForm = resetForm; // Делаем функцию доступной из HTML
+            window.resetForm = resetForm;
         });
     </script>
 </body>

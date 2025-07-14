@@ -29,7 +29,7 @@
                 <label for="positiveTraits">Назвіть три позитивні риси вашого характеру:</label>
                 <textarea id="positiveTraits" name="positiveTraits" rows="3" placeholder="Наприклад: відповідальний, комунікабельний, цілеспрямований" required></textarea>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label for="negativeTraits">Назвіть три негативні риси вашого характеру:</label>
                 <textarea id="negativeTraits" name="negativeTraits" rows="3" placeholder="Наприклад: нетерплячий, іноді лінивий, перфекціоніст" required></textarea>
             </div>
@@ -123,7 +123,6 @@
 
             form2Fields.forEach(field => {
                 if (field.type === 'radio') {
-                    // Проверяем, выбрана ли радио-кнопка в группе
                     const selectedRadio = document.querySelector(`input[name="${field.name}"]:checked`);
                     if (selectedRadio === null) {
                         allFieldsValid = false;
@@ -168,7 +167,7 @@
 
                 if (result.status === 'success') {
                     alert('Заявка успешно отправлена!');
-                    localStorage.removeItem('form1Data'); // Очищаем данные из localStorage
+                    localStorage.removeItem('form1Data'); // Очищаем данные из localStorage после успешной отправки
                     window.location.href = 'success.html'; // Перенаправляем на страницу успеха
                 } else {
                     alert('Ошибка при отправке заявки: ' + result.message);
@@ -181,7 +180,7 @@
 
         // Функция для очистки всех данных
         function clearAllData() {
-            localStorage.removeItem('form1Data'); // Очищаем данные первой страницы
+            // localStorage.removeItem('form1Data'); // ЭТУ СТРОКУ УДАЛЯЕМ ИЛИ КОММЕНТИРУЕМ, так как она уже в submit-обработчике
             document.getElementById('aboutForm').reset(); // Сбрасываем текущую форму
 
             // Сброс специфических элементов и их отображения

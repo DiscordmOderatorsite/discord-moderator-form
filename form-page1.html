@@ -16,31 +16,39 @@
 
         <form id="contactForm">
             <div class="form-group">
-                <label for="discordTag">Ваш Discord Tag: <span class="required-star">*</span></label>
-                <input type="text" id="discordTag" name="discordTag" placeholder="Наприклад: ВашНік#1234" required>
-                <div class="error-message" id="discordTagError"></div>
+                <label for="email"><i class="fas fa-envelope icon-inline"></i> Ваша електронна адреса: <span class="required-star">*</span></label>
+                <input type="email" id="email" name="email" placeholder="Наприклад: вашапошта@gmail.com" required>
+                <div class="error-message" id="emailError"></div>
             </div>
 
             <div class="form-group">
-                <label for="age">Ваш вік: <span class="required-star">*</span></label>
+                <label for="fullName"><i class="fas fa-user icon-inline"></i> Прізвище, ім'я та по батькові: <span class="required-star">*</span></label>
+                <input type="text" id="fullName" name="fullName" placeholder="Наприклад: Іванов Іван Іванович" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="age"><i class="fas fa-calendar-alt icon-inline"></i> Ваш вік: <span class="required-star">*</span></label>
                 <input type="number" id="age" name="age" min="1" max="99" required>
                 <div class="error-message" id="ageError"></div>
             </div>
 
             <div class="form-group">
-                <label for="nickname">Призвіще, імʼя та по батькові: <span class="required-star">*</span></label>
-                <input type="text" id="nickname" name="nickname" required>
-                <div class="error-message" id="nicknameError"></div>
+                <label for="telegram"><i class="fab fa-telegram-plane icon-inline"></i> Ваш Telegram: <span class="required-star">*</span></label>
+                <input type="text" id="telegram" name="telegram" placeholder="Наприклад: @ВашНік" required>
+                <div class="error-message" id="telegramError"></div>
             </div>
 
             <div class="form-group">
-                <label for="email">Ваша електронна пошта:</label>
-                <input type="email" id="email" name="email">
+                <label for="discordTag"><i class="fab fa-discord icon-inline"></i> Ваш Discord: <span class="required-star">*</span></label>
+                <input type="text" id="discordTag" name="discordTag" placeholder="Наприклад: ВашНік#1234" required>
+                <div class="error-message" id="discordTagError"></div>
             </div>
 
             <div class="buttons">
                 <button type="button" class="button back" onclick="location.href='index.html'">Назад</button>
                 <button type="submit" class="button next">Далі</button>
+                <button type="button" class="button reset" onclick="resetForm()">ОЧИСТИТИ ВСЕ</button>
             </div>
         </form>
     </div>
@@ -48,57 +56,79 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('contactForm');
-            const discordTagInput = document.getElementById('discordTag');
+            
+            // Получаем ссылки на элементы ввода
+            const emailInput = document.getElementById('email');
+            const fullNameInput = document.getElementById('fullName');
             const ageInput = document.getElementById('age');
-            const nicknameInput = document.getElementById('nickname');
+            const telegramInput = document.getElementById('telegram');
+            const discordTagInput = document.getElementById('discordTag');
 
-            const discordTagError = document.getElementById('discordTagError');
+            // Получаем ссылки на элементы для сообщений об ошибках
+            const emailError = document.getElementById('emailError');
+            const fullNameError = document.getElementById('fullNameError');
             const ageError = document.getElementById('ageError');
-            const nicknameError = document.getElementById('nicknameError');
+            const telegramError = document.getElementById('telegramError');
+            const discordTagError = document.getElementById('discordTagError');
 
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); 
+                event.preventDefault(); // Предотвращаем стандартную отправку формы
 
                 let isValid = true;
 
-           
+                // Сброс всех сообщений об ошибках перед новой валидацией
+                hideError(emailInput, emailError);
+                hideError(fullNameInput, fullNameError);
+                hideError(ageInput, ageError);
+                hideError(telegramInput, telegramError);
+                hideError(discordTagInput, discordTagError);
+
+                // 1. Валидация Email
+                if (!emailInput.value.trim()) {
+                    displayError(emailInput, emailError, 'Будь ласка, введіть вашу електронну адресу.');
+                    isValid = false;
+                } else if (!isValidEmail(emailInput.value.trim())) {
+                    displayError(emailInput, emailError, 'Будь ласка, введіть коректну електронну адресу.');
+                    isValid = false;
+                }
+
+                // 2. Валидация ФИО
+                if (!fullNameInput.value.trim()) {
+                    displayError(fullNameInput, fullNameError, 'Будь ласка, введіть ваше прізвище, ім\'я та по батькові.');
+                    isValid = false;
+                }
+
+                // 3. Валидация возраста
+                const age = parseInt(ageInput.value);
+                if (isNaN(age) || age < 1 || age > 99) {
+                    displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
+                    isValid = false;
+                } else if (age > 14) { // Валидация по требованию "виключно до 14 років!"
+                    displayError(ageInput, ageError, 'На жаль, вік має бути не більше 14 років.');
+                    isValid = false;
+                }
+
+                // 4. Валидация Telegram
+                if (!telegramInput.value.trim()) {
+                    displayError(telegramInput, telegramError, 'Будь ласка, введіть ваш Telegram нікнейм.');
+                    isValid = false;
+                }
+
+                // 5. Валидация Discord Tag
                 if (!discordTagInput.value.trim()) {
                     displayError(discordTagInput, discordTagError, 'Будь ласка, введіть ваш Discord Tag.');
                     isValid = false;
-                } else {
-                    hideError(discordTagInput, discordTagError);
                 }
-
                 
-                const age = parseInt(ageInput.value);
-                if (isNaN(age) || age < 1 || age > 99) { 
-                    displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
-                    isValid = false;
-                } else if (age > 14) {
-                    displayError(ageInput, ageError, 'На жаль, вік має бути не більше 14 років.');
-                    isValid = false;
-                } else {
-                    hideError(ageInput, ageError);
-                }
-
-
-                // Валидация NickName
-                if (!nicknameInput.value.trim()) {
-                    displayError(nicknameInput, nicknameError, 'Будь ласка, введіть ваші імʼя, фамілію та по батькові.');
-                    isValid = false;
-                } else {
-                    hideError(nicknameInput, nicknameError);
-                }
-
-                // Если все поля валидны, переходим к следующей странице
+                // Если все поля валидны, сохраняем данные и переходим
                 if (isValid) {
-                    // Здесь вы можете сохранить данные, например, в localStorage, если нужно
-                    localStorage.setItem('discordTag', discordTagInput.value);
+                    localStorage.setItem('email', emailInput.value);
+                    localStorage.setItem('fullName', fullNameInput.value);
                     localStorage.setItem('age', ageInput.value);
-                    localStorage.setItem('nickname', nicknameInput.value);
-                    localStorage.setItem('email', document.getElementById('email').value);
+                    localStorage.setItem('telegram', telegramInput.value);
+                    localStorage.setItem('discordTag', discordTagInput.value);
 
-                    location.href = 'form-page2.html';
+                    location.href = 'form-page2.html'; // Переходим на следующую страницу
                 }
             });
 
@@ -114,6 +144,24 @@
                 errorElement.textContent = '';
                 errorElement.style.display = 'none';
             }
+
+            // Функция для простой валидации Email
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
+
+            // Функция для очистки всех полей формы
+            function resetForm() {
+                form.reset(); // Сбрасывает все поля формы
+                // Также очищаем сообщения об ошибках, если они были
+                hideError(emailInput, emailError);
+                hideError(fullNameInput, fullNameError);
+                hideError(ageInput, ageError);
+                hideError(telegramInput, telegramError);
+                hideError(discordTagInput, discordTagError);
+            }
+            window.resetForm = resetForm; // Делаем функцию доступной из HTML
         });
     </script>
 </body>

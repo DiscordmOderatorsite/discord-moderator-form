@@ -103,8 +103,8 @@
                 if (isNaN(age) || age < 1 || age > 99) {
                     displayError(ageInput, ageError, 'Будь ласка, введіть коректний вік (число від 1 до 99).');
                     isValid = false;
-                } else if (age > 14) { // Валидация по требованию "виключно до 14 років!"
-                    displayError(ageInput, ageError, 'На жаль, вік має бути не більше 14 років.');
+                } else if (age < 14) { // <-- ИЗМЕНЕНО: Возраст должен быть НЕ МЕНЬШЕ 14 лет
+                    displayError(ageInput, ageError, 'На жаль, вік має бути не менше 14 років.');
                     isValid = false;
                 }
 
